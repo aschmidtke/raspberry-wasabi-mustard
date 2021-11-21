@@ -1,0 +1,28 @@
+async function newComment(event) {
+    event.preventDefault();
+
+    const comment_text = document.querySelector('textarea[name="comment-body"]').value.trim(); //check values
+
+    const recipe_id = window.location.toString().split('/')[
+        window.location.toString().split('/').length -1
+    ];
+
+    if (comment_text) {
+        const response = await fetch('/api/comments', {
+            method: 'POST',
+            body: JSON.stringify({
+                recipe_id,
+                comment_text
+            }),
+            headers: { 'Content_Type': 'application/json' }
+        });
+        if (response.ok) {
+            document.location.reload();
+        } else {
+            alert(response.statusText);
+        }
+    }
+}
+
+// check these values
+document.querySelector('.comment-form').addEventListener('submit', newComment);
